@@ -1,0 +1,18 @@
+{
+  "info": { "name": "Facturación Grupo 8", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json" },
+  "variable": [{ "key": "baseUrl", "value": "http://localhost:3000" }],
+  "item": [
+    { "name": "Productos", "request": { "method": "GET", "url": "{{baseUrl}}/api/productos" } },
+    { "name": "Clientes", "request": { "method": "GET", "url": "{{baseUrl}}/api/clientes" } },
+    { "name": "Crear cliente", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode":"raw", "raw":"{\n  \"nombre\": \"Cliente de prueba\",\n  \"tipo\": \"contribuyente\",\n  \"nivel\": \"plata\"\n}" }, "url": "{{baseUrl}}/api/clientes" } },
+    { "name": "Crear factura válida", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode":"raw", "raw":"{\n  \"cliente_id\": 1,\n  \"forma_pago\": \"contado\",\n  \"lineas\": [{\"producto_codigo\":\"TEC-01\",\"cantidad\":2}]\n}" }, "url": "{{baseUrl}}/api/facturas" } },
+    { "name": "Crear factura cantidad inválida", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode":"raw", "raw":"{\"cliente_id\":1,\"forma_pago\":\"contado\",\"lineas\":[{\"producto_codigo\":\"TEC-01\",\"cantidad\":0}]}" }, "url": "{{baseUrl}}/api/facturas" } },
+    { "name": "Emitir factura", "request": { "method": "POST", "url": "{{baseUrl}}/api/facturas/1/emitir" } },
+    { "name": "Emitir inexistente", "request": { "method": "POST", "url": "{{baseUrl}}/api/facturas/9999/emitir" } },
+    { "name": "Detalle factura", "request": { "method": "GET", "url": "{{baseUrl}}/api/facturas/1" } },
+    { "name": "Detalle inexistente", "request": { "method": "GET", "url": "{{baseUrl}}/api/facturas/9999" } },
+    { "name": "Historial", "request": { "method": "GET", "url": "{{baseUrl}}/api/facturas" } },
+    { "name": "Filtrar emitidas", "request": { "method": "GET", "url": "{{baseUrl}}/api/facturas?estado=emitida" } },
+    { "name": "Reportes", "request": { "method": "GET", "url": "{{baseUrl}}/api/reportes" } }
+  ]
+}

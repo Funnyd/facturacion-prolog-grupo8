@@ -70,6 +70,9 @@ web_modules/
 .env.*
 !.env.example
 
+# Base local generada durante la ejecución
+data/
+
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 .parcel-cache
