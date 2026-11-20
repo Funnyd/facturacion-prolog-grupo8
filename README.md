@@ -24,13 +24,14 @@ web (HTML, CSS, JS) -> API Node.js -> SQLite
                          reglas/reglas.pl
 ```
 
-`reglas/reglas.pl` contiene el motor declarativo solicitado. La API incluye el mismo cálculo como adaptador local para poder hacer la demo en equipos sin SWI-Prolog; al instalar SWI-Prolog, el siguiente paso es reemplazar el adaptador por la ejecución del predicado `evaluar_factura/5`.
+`reglas/reglas.pl` contiene el motor declarativo solicitado, con kits recursivos y el predicado `evaluar_factura/6`. La API usa un adaptador JavaScript equivalente mientras se instala SWI-Prolog en Windows; no se debe afirmar que la API ejecuta Prolog hasta instalarlo e integrar el proceso.
 
 ## Endpoints
 
 | Método | Ruta | Descripción |
 | --- | --- | --- |
 | GET | `/api/productos` | Catálogo y stock |
+| POST / PUT | `/api/productos` y `/api/productos/:codigo` | Crear o editar productos |
 | GET | `/api/clientes` | Clientes |
 | POST | `/api/clientes` | Crear cliente |
 | GET | `/api/facturas?estado=&cliente=` | Historial |
@@ -52,3 +53,15 @@ web (HTML, CSS, JS) -> API Node.js -> SQLite
 ## Equipo y pendientes de entrega
 
 Completen los nombres del grupo, creen los Issues e incluyan una colección Postman y las capturas en este README. No suban `.env` ni bases de datos a Git.
+
+## Verificación
+
+Ejecute `npm test`: hay 15 casos de reglas (IVA, descuentos, crédito, cantidades, stock y redondeo). La colección Postman contiene 12 peticiones y 27 verificaciones. Antes de entregar, ejecútenla completa desde Postman y guarden una captura del resultado.
+
+## Evidencia pendiente del equipo
+
+- Agregar los nombres y roles de los integrantes.
+- Crear Issues con las historias de usuario y criterios de aceptación.
+- Hacer ramas y Pull Requests reales, revisados por otra persona.
+- Añadir capturas de la interfaz funcionando y el diagrama de arquitectura.
+- Crear el Release o etiqueta `v1.0` al finalizar.

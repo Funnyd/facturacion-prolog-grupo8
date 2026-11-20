@@ -4,3 +4,14 @@ test('aplica volumen antes de nivel oro',()=>{const r=calcularLinea(p,12,{tipo:'
 test('cliente exonerado no paga IVA',()=>assert.equal(calcularLinea(p,1,{tipo:'exonerado',nivel:'plata'}).iva,0));
 test('rechaza crédito de cliente regular',()=>assert.match(validarFactura({tipo:'consumidor_final',nivel:'regular'},'credito',[{producto_codigo:'X',cantidad:1}],new Map([['X',p]]))[0],/Crédito/));
 test('detecta falta de stock',()=>assert.match(validarFactura({tipo:'contribuyente',nivel:'oro'},'contado',[{producto_codigo:'X',cantidad:20}],new Map([['X',p]]))[0],/Stock insuficiente/));
+test('medicamento aplica IVA de 2 por ciento',()=>assert.equal(calcularLinea({...p,categoria:'medicamento'},1,{tipo:'contribuyente',nivel:'regular'}).iva,20));
+test('canasta aplica IVA de 1 por ciento',()=>assert.equal(calcularLinea({...p,categoria:'canasta'},1,{tipo:'contribuyente',nivel:'regular'}).iva,10));
+test('exento aplica IVA cero',()=>assert.equal(calcularLinea({...p,categoria:'exento'},1,{tipo:'contribuyente',nivel:'regular'}).iva,0));
+test('desde 10 unidades aplica 5 por ciento de volumen',()=>assert.equal(calcularLinea(p,10,{tipo:'consumidor_final',nivel:'regular'}).base,9500));
+test('desde 50 unidades aplica 10 por ciento de volumen',()=>assert.equal(calcularLinea(p,50,{tipo:'consumidor_final',nivel:'regular'}).base,45000));
+test('nivel plata aplica 5 por ciento después del volumen',()=>assert.equal(calcularLinea(p,1,{tipo:'contribuyente',nivel:'plata'}).base,950));
+test('nivel regular no descuenta por cliente',()=>assert.equal(calcularLinea(p,1,{tipo:'contribuyente',nivel:'regular'}).base,1000));
+test('redondea la base por línea',()=>assert.equal(calcularLinea({...p,precio:333},3,{tipo:'contribuyente',nivel:'oro'}).base,899));
+test('rechaza factura sin líneas',()=>assert.match(validarFactura({tipo:'contribuyente',nivel:'oro'},'contado',[],new Map())[0],/al menos una/));
+test('rechaza producto inexistente',()=>assert.match(validarFactura({tipo:'contribuyente',nivel:'oro'},'contado',[{producto_codigo:'Z',cantidad:1}],new Map())[0],/no existe/));
+test('permite crédito a contribuyente oro',()=>assert.equal(validarFactura({tipo:'contribuyente',nivel:'oro'},'credito',[{producto_codigo:'X',cantidad:1}],new Map([['X',p]])).length,0));
